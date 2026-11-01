@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Rettung im Verborgenen: Weidt und Schindler</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f2f5f6; --surface:#ffffff; --text:#1c2a31; --muted:#51636c; --line:#d3dde1;
+  --weidt:#2b7a57; --weidt-soft:#e1f1e9; --schindler:#38568a; --schindler-soft:#e3eaf6;
+  --ok:#1f7a45; --bad:#b3402f; --focus:#c47a00;
+  box-sizing:border-box; padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#121a1e; --surface:#1b262c; --text:#e6eef1; --muted:#9fb2bb; --line:#2f4047;
+    --weidt:#5cc596; --weidt-soft:#1d3a2e; --schindler:#8fb0ee; --schindler-soft:#1f2d4a;
+    --ok:#62cf91; --bad:#f08a7a; --focus:#f0b44a;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#121a1e; --surface:#1b262c; --text:#e6eef1; --muted:#9fb2bb; --line:#2f4047;
+  --weidt:#5cc596; --weidt-soft:#1d3a2e; --schindler:#8fb0ee; --schindler-soft:#1f2d4a;
+  --ok:#62cf91; --bad:#f08a7a; --focus:#f0b44a;
+}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:1.0625rem/1.65 "Atkinson Hyperlegible",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+main{max-width:46rem;margin:0 auto;padding:1.25rem 1rem 4rem}
+h1{font-size:clamp(2rem,7vw,3rem);line-height:1.1;margin:1.5rem 0 .75rem;letter-spacing:-.01em}
+h2{font-size:1.5rem;margin:0 0 .75rem;line-height:1.25}
+p{margin:.5rem 0}
+section{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:1.25rem;margin:1.25rem 0}
+.hero{background:none;border:0;padding:0}
+.lead{font-size:1.125rem;color:var(--muted);max-width:38rem}
+.question{border-left:5px solid var(--weidt);padding:.25rem 0 .25rem 1rem;margin:1.25rem 0;font-weight:700}
+.themebtn{float:right;margin-top:.5rem}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+.btn{background:var(--surface);border:2px solid var(--line);border-radius:10px;padding:.55rem 1rem;min-height:44px}
+.btn:hover{border-color:var(--muted)}
+.btn.primary{background:var(--text);color:var(--bg);border-color:var(--text);font-weight:700}
+dl.info{display:grid;grid-template-columns:max-content 1fr;gap:.5rem 1.25rem;margin:0}
+dl.info dt{font-weight:700}
+dl.info dd{margin:0}
+.exhibit{margin-top:1rem;padding:1rem;background:var(--weidt-soft);border-radius:10px}
+.exhibit strong{display:block;margin-bottom:.25rem}
+.note{color:var(--muted);font-size:.95rem}
+.seg{display:grid;grid-template-columns:1fr 1fr;gap:.5rem;margin-bottom:1rem}
+.seg button{border:2px solid var(--line);background:var(--surface);border-radius:10px;padding:.7rem;font-weight:700;min-height:48px}
+.seg button[aria-pressed="true"][data-who="weidt"]{background:var(--weidt-soft);border-color:var(--weidt);color:var(--weidt)}
+.seg button[aria-pressed="true"][data-who="schindler"]{background:var(--schindler-soft);border-color:var(--schindler);color:var(--schindler)}
+#cmp{border-left:6px solid var(--weidt);padding-left:1rem}
+#cmp[data-who="schindler"]{border-left-color:var(--schindler)}
+#cmp dl{margin:0}
+#cmp dt{font-weight:700;margin-top:.9rem}
+#cmp dd{margin:.1rem 0 0}
+details{border-top:1px solid var(--line);padding:.25rem 0}
+details:last-of-type{border-bottom:1px solid var(--line)}
+summary{cursor:pointer;font-weight:700;padding:.7rem 0;min-height:44px;list-style:none;display:flex;justify-content:space-between;gap:1rem}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";font-size:1.4rem;line-height:1.2;transition:transform .2s}
+details[open] summary::after{transform:rotate(45deg)}
+details .body{padding:0 0 .9rem}
+.opts{display:grid;gap:.6rem;margin:1rem 0}
+.opts button{text-align:left;background:var(--surface);border:2px solid var(--line);border-radius:10px;padding:.7rem 1rem;min-height:48px}
+.opts button:disabled{cursor:default}
+.opts button.right{border-color:var(--ok);background:color-mix(in srgb,var(--ok) 14%,var(--surface))}
+.opts button.wrong{border-color:var(--bad);background:color-mix(in srgb,var(--bad) 14%,var(--surface))}
+.fb{min-height:3.2rem;font-weight:700}
+.score{display:flex;justify-content:space-between;color:var(--muted);font-size:.95rem}
+.bar{height:8px;background:var(--line);border-radius:4px;overflow:hidden;margin:.4rem 0 1rem}
+.bar i{display:block;height:100%;width:0;background:var(--weidt);transition:width .3s}
+textarea{width:100%;min-height:9rem;font:inherit;color:var(--text);background:var(--bg);border:2px solid var(--line);border-radius:10px;padding:.8rem;resize:vertical}
+.row{display:flex;flex-wrap:wrap;gap:.6rem;align-items:center;margin-top:.6rem}
+ul.src{padding-left:1.2rem;margin:.5rem 0}
+@media (max-width:30rem){dl.info{grid-template-columns:1fr;gap:.1rem}dl.info dd{margin-bottom:.7rem}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<main>
+<header class="hero">
+  <button class="btn themebtn" id="theme" type="button">Hell / Dunkel</button>
+  <h1>Rettung im Verborgenen</h1>
+  <p class="lead">Otto Weidt und Oskar Schindler im Vergleich. Handout zu unserer Exkursion in das Museum Blindenwerkstatt Otto Weidt in Berlin.</p>
+  <p class="question">Wie haben Otto Weidt und Oskar Schindler es geschafft, jüdische Menschen vor der Verfolgung zu retten? Und was unterscheidet ihre Beweggründe und Methoden?</p>
+</header>
+
+<section id="museum">
+  <h2>Das Museum</h2>
+  <dl class="info">
+    <dt>Adresse</dt><dd>Rosenthaler Straße 39, 10178 Berlin-Mitte. Der Eingang ist im Hof.</dd>
+    <dt>Öffnungszeiten</dt><dd>Montag bis Freitag: 9 bis 18 Uhr.<br>Samstag, Sonntag und Feiertage: 10 bis 18 Uhr.<br>Geschlossen: 24. bis 26. Dezember, 31. Dezember und 1. Januar.</dd>
+    <dt>Eintritt</dt><dd>Frei. Das Museum kostet nichts.</dd>
+    <dt>Barrierefrei</dt><dd>Ja. Es gibt einen Aufzug.</dd>
+  </dl>
+  <p class="note">Zeiten können sich ändern. Schaut vor dem Besuch auf museum-blindenwerkstatt.de.</p>
+  <div class="exhibit">
+    <strong>Unser Exponat: die Werkbänke und die grüne Maschine „M 32“</strong>
+    Die Werkbänke und die Maschine sind original. An solchen Plätzen arbeiteten die blinden und gehörlosen Beschäftigten in der Werkstatt. Dort wurden Besen und Bürsten hergestellt. Die Arbeit war ihr Schutz: Wer arbeitete, wurde zunächst nicht abgeholt.
+  </div>
+</section>
+
+<section id="vergleich">
+  <h2>Weidt und Schindler im Vergleich</h2>
+  <p>Tippt auf einen Namen. Dann seht ihr die Angaben zu dieser Person.</p>
+  <div class="seg" role="group" aria-label="Person wählen">
+    <button type="button" data-who="weidt" aria-pressed="true">Otto Weidt</button>
+    <button type="button" data-who="schindler" aria-pressed="false">Oskar Schindler</button>
+  </div>
+  <div id="cmp" data-who="weidt" aria-live="polite"></div>
+</section>
+
+<section id="kontroversen">
+  <h2>Kontroversen: Darüber wird gestritten</h2>
+  <p>Tippt auf eine Frage. Dann klappt der Text auf.</p>
+  <details><summary>Motiv: Warum haben sie geholfen?</summary><div class="body">
+    <p>Bei Schindler gibt es Streit. Er war Mitglied der NSDAP. Am Anfang wollte er mit der Fabrik Geld verdienen. Jüdische Zwangsarbeiter waren billig. Später setzte er sein Geld und sein Leben ein, um Menschen zu retten.</p>
+    <p>Bei Weidt sehen viele vor allem Mitgefühl. Aber auch seine Werkstatt musste Geld einbringen.</p>
+    <p><b>Frage an euch:</b> Zählt nur das Ergebnis oder auch der Grund?</p>
+  </div></details>
+  <details><summary>Heldenerzählung: Sind sie „Helden“?</summary><div class="body">
+    <p>Der Film „Schindlers Liste“ hat Schindler weltberühmt gemacht. Das Bild vom einzelnen Helden ist einfach und stark. Aber es ist auch gefährlich: Es zeigt nur einen Mann. Die meisten Deutschen haben weggeschaut oder mitgemacht.</p>
+    <p>Außerdem kommen die Verfolgten im Heldenbild oft nur als Opfer vor. Dabei haben sie selbst viel getan, um zu überleben.</p>
+  </div></details>
+  <details><summary>Sicherheit des Schutzes: Waren die Menschen wirklich sicher?</summary><div class="body">
+    <p>Nein. Der Schutz war immer unsicher. Er hing von Bestechung, von Aufträgen und von Glück ab. Auch in Weidts Werkstatt wurden Menschen verhaftet und deportiert. Weidt konnte nicht alle retten.</p>
+    <p>Wer „gerettet“ war, lebte in ständiger Angst.</p>
+  </div></details>
+  <details><summary>Erinnerungskultur: Wie erinnern wir uns richtig?</summary><div class="body">
+    <p>Schindler kennen viele. Weidt kennen weniger. Sein Museum liegt versteckt in einem Hinterhof. Wer erinnert wird, hängt auch von Filmen und Medien ab.</p>
+    <p>Wichtig ist auch: Erinnern an Retter darf nicht davon ablenken, dass Millionen Menschen ermordet wurden. Retter waren die Ausnahme.</p>
+  </div></details>
+</section>
+
+<section id="quiz">
+  <h2>Quiz</h2>
+  <div class="score"><span id="qnum"></span><span id="qscore"></span></div>
+  <div class="bar" aria-hidden="true"><i id="qbar"></i></div>
+  <div id="qbox"></div>
+</section>
+
+<section id="meinung">
+  <h2>Eure Meinung</h2>
+  <p>Wer hat euch mehr überzeugt: Weidt oder Schindler? Oder ist die Frage falsch? Schreibt eure Meinung auf.</p>
+  <label for="opinion" class="note">Eure Meinung</label>
+  <textarea id="opinion" placeholder="Ich finde …, weil …"></textarea>
+  <div class="row">
+    <button class="btn primary" id="copy" type="button">Text kopieren</button>
+    <button class="btn" id="clear" type="button">Löschen</button>
+    <span class="note" id="count" aria-live="polite">0 Wörter</span>
+  </div>
+  <p class="note">Der Text bleibt nur auf eurem Gerät. Er wird nicht gesendet.</p>
+</section>
+
+<section id="quellen">
+  <h2>Quellen</h2>
+  <ul class="src">
+    <li>Museum Blindenwerkstatt Otto Weidt: Webseite und Faltblatt, museum-blindenwerkstatt.de (Adresse, Zeiten, Eintritt).</li>
+    <li>Berlin.de: Eintrag „Museum Blindenwerkstatt Otto Weidt“, Stand 10. Juni 2026.</li>
+    <li>Bundeszentrale für politische Bildung: „Museum Blindenwerkstatt Otto Weidt“, bpb.de.</li>
+    <li>Eigene Beobachtungen bei unserer Exkursion in Berlin.</li>
+    <li>Material aus dem Geschichtsunterricht zu Weidt und Schindler.</li>
+  </ul>
+  <p class="note">Gruppe: Geschichtskurs Oberstufe. Datum der Exkursion: 21. September 2026.</p>
+</section>
+</main>
+
+<script>
+const DATA={
+ weidt:[["Beruf","Fabrikant. Er stellte Besen und Bürsten her."],
+  ["Partei","Keine. Er war nicht in der NSDAP."],
+  ["Beschäftigte","Hauptsächlich blinde und gehörlose Juden. Etwa 30 Menschen arbeiteten bei ihm."],
+  ["Trick","Seine Werkstatt lieferte für die Wehrmacht. Darum galt sie als „kriegswichtig“."],
+  ["Methoden","Er bestach Gestapo-Leute mit Geld und Waren. Er besorgte Essen und falsche Papiere. Er versteckte Menschen im Hinterhaus."],
+  ["Motiv","Mitgefühl und Verantwortung für seine Beschäftigten."]],
+ schindler:[["Beruf","Unternehmer. Er leitete eine Emailwaren-Fabrik in Krakau."],
+  ["Partei","NSDAP. Er war Parteimitglied."],
+  ["Beschäftigte","Jüdische Zwangsarbeiter. Etwa 1.200 Menschen standen am Ende auf seiner Liste."],
+  ["Trick","Auch er nutzte Rüstungsaufträge. Seine Fabrik galt als „kriegswichtig“."],
+  ["Methoden","Er bestach SS-Leute und nutzte seine Kontakte. Er stellte eine Liste mit Namen auf. Er holte seine Arbeiter in eine neue Fabrik in Brünnlitz."],
+  ["Motiv","Am Anfang Geld und Vorteile. Später Mitgefühl und Mut."]]
+};
+const cmp=document.getElementById("cmp");
+function show(w){
+  cmp.dataset.who=w;
+  cmp.innerHTML="<dl>"+DATA[w].map(r=>"<dt>"+r[0]+"</dt><dd>"+r[1]+"</dd>").join("")+"</dl>";
+  document.querySelectorAll(".seg button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.who===w));
+}
+document.querySelectorAll(".seg button").forEach(b=>b.addEventListener("click",()=>show(b.dataset.who)));
+show("weidt");
+
+const Q=[
+ {q:"Was stellte Otto Weidt in seiner Werkstatt her?",o:["Besen und Bürsten","Töpfe und Pfannen","Schuhe"],a:0,
+  r:"Richtig. In der Blindenwerkstatt wurden Besen und Bürsten gemacht.",w:"Nicht ganz. Weidt stellte Besen und Bürsten her. Schindler stellte Emailwaren her."},
+ {q:"Wer von beiden war Mitglied der NSDAP?",o:["Nur Weidt","Nur Schindler","Beide","Keiner"],a:1,
+  r:"Richtig. Schindler war in der Partei. Weidt nicht.",w:"Nicht ganz. Nur Schindler war in der NSDAP."},
+ {q:"Wie viele Menschen standen am Ende auf Schindlers Liste?",o:["Etwa 12","Etwa 120","Etwa 1.200"],a:2,
+  r:"Richtig. Es waren etwa 1.200 Menschen.",w:"Nicht ganz. Es waren etwa 1.200 Menschen."},
+ {q:"Was gilt für Schindlers Motiv?",o:["Er wollte von Anfang an nur retten","Erst wollte er Geld verdienen, später wollte er retten","Er wurde dazu gezwungen"],a:1,
+  r:"Richtig. Sein Motiv hat sich verändert. Darüber wird noch gestritten.",w:"Nicht ganz. Am Anfang ging es ihm um Geld. Später half er aus Mitgefühl."}
+];
+let i=0,score=0;
+const box=document.getElementById("qbox");
+function render(){
+  document.getElementById("qscore").textContent="Punkte: "+score+" von "+Q.length;
+  document.getElementById("qbar").style.width=(i/Q.length*100)+"%";
+  if(i>=Q.length){
+    document.getElementById("qnum").textContent="Fertig";
+    const msg=score===Q.length?"Sehr gut! Alles richtig.":score>=2?"Gut gemacht. Lest bei den Fehlern noch einmal nach.":"Schaut euch den Vergleich oben noch einmal an.";
+    box.innerHTML="<p><b>Ihr habt "+score+" von "+Q.length+" Punkten.</b></p><p>"+msg+"</p><button class='btn primary' id='again' type='button'>Noch einmal spielen</button>";
+    document.getElementById("again").onclick=()=>{i=0;score=0;render()};
+    return;
+  }
+  const q=Q[i];
+  document.getElementById("qnum").textContent="Frage "+(i+1)+" von "+Q.length;
+  box.innerHTML="<p><b>"+q.q+"</b></p><div class='opts'>"+q.o.map((t,n)=>"<button type='button' data-n='"+n+"'>"+t+"</button>").join("")+"</div><p class='fb' id='fb' aria-live='polite'></p><button class='btn primary' id='next' type='button' hidden>"+(i<Q.length-1?"Nächste Frage":"Ergebnis zeigen")+"</button>";
+  box.querySelectorAll(".opts button").forEach(b=>b.addEventListener("click",()=>{
+    const n=+b.dataset.n,ok=n===q.a;
+    if(ok)score++;
+    box.querySelectorAll(".opts button").forEach(x=>{x.disabled=true;if(+x.dataset.n===q.a)x.classList.add("right")});
+    if(!ok)b.classList.add("wrong");
+    const fb=document.getElementById("fb");
+    fb.textContent=(ok?"✓ ":"✗ ")+(ok?q.r:q.w);
+    fb.style.color=ok?"var(--ok)":"var(--bad)";
+    document.getElementById("qscore").textContent="Punkte: "+score+" von "+Q.length;
+    const nx=document.getElementById("next");nx.hidden=false;nx.focus();
+    nx.onclick=()=>{i++;render()};
+  }));
+}
+render();
+
+const ta=document.getElementById("opinion"),cnt=document.getElementById("count");
+function upd(){const t=ta.value.trim();cnt.textContent=(t?t.split(/\s+/).length:0)+" Wörter";try{localStorage.setItem("opinion",ta.value)}catch(e){}}
+try{ta.value=localStorage.getItem("opinion")||""}catch(e){}
+ta.addEventListener("input",upd);upd();
+document.getElementById("clear").onclick=()=>{ta.value="";upd()};
+document.getElementById("copy").onclick=async e=>{
+  try{await navigator.clipboard.writeText(ta.value);e.target.textContent="Kopiert ✓"}catch(err){ta.select();e.target.textContent="Text markiert"}
+  setTimeout(()=>e.target.textContent="Text kopieren",1800);
+};
+document.getElementById("theme").onclick=()=>{
+  const r=document.documentElement,dark=matchMedia("(prefers-color-scheme: dark)").matches;
+  const cur=r.dataset.theme||(dark?"dark":"light");
+  r.dataset.theme=cur==="dark"?"light":"dark";
+};
+</script>
+</body>
+</html>
